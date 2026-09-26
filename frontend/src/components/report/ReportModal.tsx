@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { AnalysisResponse, FindingItem } from '../../types/dental';
-import { X, Copy, Check, Download, Code, FileText, ShieldCheck } from 'lucide-react';
+import { X, Copy, Check, Download, Code, ShieldCheck } from 'lucide-react';
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -69,58 +69,58 @@ export const ReportModal: React.FC<ReportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-      <div className="clinical-glass-elevated border border-white/10 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden shadow-black/80">
-        {/* Header */}
-        <div className="px-5 py-4 border-b border-white/[0.08] flex items-center justify-between bg-black/40">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+      <div className="notion-glass-elevated border border-white/[0.12] rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+        {/* Header Estilo Notion Page */}
+        <div className="px-5 py-4 border-b border-white/[0.08] flex items-center justify-between bg-black/30">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-              <FileText className="w-5 h-5" />
+            <div className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/[0.1] flex items-center justify-center text-base shadow-sm">
+              📄
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-sm font-semibold tracking-wide text-slate-100">
-                  Laudo Radiográfico & JSON Canônico
+                <h2 className="text-sm font-semibold tracking-tight text-slate-100">
+                  Laudo Radiográfico Odontológico
                 </h2>
-                <span className="font-mono text-[10px] text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded">
-                  {analysis.exam_id}
+                <span className="font-mono text-[10px] px-1.5 py-0.5 rounded notion-tag-purple font-medium">
+                  {analysis.exam_id.slice(0, 8)}...
                 </span>
               </div>
               <p className="text-[11px] text-slate-400">
-                Auditoria clínica validada • {analysis.modality.detected}
+                Documento Clínico Canônico • {analysis.modality.detected}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            {/* Tabs */}
-            <div className="flex bg-white/[0.04] border border-white/[0.06] p-0.5 rounded-lg text-xs">
+          <div className="flex items-center gap-2">
+            {/* Tabs Estilo Notion */}
+            <div className="flex bg-white/[0.05] border border-white/[0.08] p-0.5 rounded-lg text-xs">
               <button
                 onClick={() => setActiveTab('report')}
-                className={`px-3 py-1 rounded-md font-medium transition ${
+                className={`px-3 py-1 rounded-md font-medium transition cursor-pointer ${
                   activeTab === 'report'
-                    ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 shadow-sm'
+                    ? 'bg-white/[0.14] text-slate-100 font-semibold shadow-sm'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                Laudo Formatado
+                Documento
               </button>
               <button
                 onClick={() => setActiveTab('json')}
-                className={`px-3 py-1 rounded-md font-medium transition flex items-center gap-1.5 ${
+                className={`px-3 py-1 rounded-md font-medium transition flex items-center gap-1.5 cursor-pointer ${
                   activeTab === 'json'
-                    ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 shadow-sm'
+                    ? 'bg-white/[0.14] text-slate-100 font-semibold shadow-sm'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <Code className="w-3.5 h-3.5" />
-                JSON Clínico
+                JSON Canônico
               </button>
             </div>
 
             <button
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-xs font-medium text-slate-300 transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-xs font-medium text-slate-300 transition cursor-pointer"
               title="Copiar Conteúdo"
             >
               {copied ? (
@@ -136,18 +136,19 @@ export const ReportModal: React.FC<ReportModalProps> = ({
               )}
             </button>
 
+            {/* Botão de Download Notion Primary */}
             <button
               onClick={handleDownload}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-xs font-medium text-cyan-300 transition"
-              title="Baixar Arquivo"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg btn-notion-primary text-xs font-medium text-white transition cursor-pointer"
+              title="Baixar Laudo"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Baixar</span>
+              <span>Exportar</span>
             </button>
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-white/[0.08] text-slate-400 hover:text-slate-200 transition"
+              className="p-1.5 rounded-lg hover:bg-white/[0.08] text-slate-400 hover:text-slate-200 transition cursor-pointer ml-1"
               title="Fechar"
             >
               <X className="w-5 h-5" />
@@ -155,17 +156,37 @@ export const ReportModal: React.FC<ReportModalProps> = ({
           </div>
         </div>
 
+        {/* Tabela de Propriedades da Página Notion */}
+        <div className="px-6 py-2.5 bg-black/20 border-b border-white/[0.06] grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div>
+            <span className="text-slate-500 block text-[10px] uppercase font-mono">Modalidade</span>
+            <span className="font-medium text-slate-200">{analysis.modality.detected}</span>
+          </div>
+          <div>
+            <span className="text-slate-500 block text-[10px] uppercase font-mono">Qualidade</span>
+            <span className="font-semibold text-emerald-400 font-mono">{(analysis.image_quality.score * 100).toFixed(0)}%</span>
+          </div>
+          <div>
+            <span className="text-slate-500 block text-[10px] uppercase font-mono">Achados Confirmados</span>
+            <span className="font-medium text-slate-200">{confirmedFindings.filter(f => f.status === 'accepted' || f.status === 'edited' || f.status === 'manual_entry').length} itens</span>
+          </div>
+          <div>
+            <span className="text-slate-500 block text-[10px] uppercase font-mono">Responsável</span>
+            <span className="font-medium text-slate-200">Cirurgião-Dentista</span>
+          </div>
+        </div>
+
         {/* Content Body */}
-        <div className="flex-1 overflow-y-auto p-6 bg-black/30 font-sans text-sm text-slate-200 leading-relaxed">
+        <div className="flex-1 overflow-y-auto p-6 bg-[#070f24] font-sans text-sm text-slate-200 leading-relaxed">
           {activeTab === 'report' ? (
             <div className="max-w-none">
-              <pre className="whitespace-pre-wrap font-sans text-slate-300 bg-[#06080d] p-6 rounded-xl border border-white/[0.06] text-xs leading-relaxed shadow-inner">
+              <pre className="whitespace-pre-wrap font-sans text-slate-200 bg-white/[0.02] p-6 rounded-xl border border-white/[0.08] text-xs leading-relaxed shadow-sm">
                 {reportMarkdown}
               </pre>
             </div>
           ) : (
             <div className="relative">
-              <pre className="font-mono text-xs text-cyan-300 bg-[#06080d] p-6 rounded-xl border border-white/[0.06] overflow-x-auto shadow-inner leading-relaxed">
+              <pre className="font-mono text-xs text-[#d6b6f6] bg-black/50 p-6 rounded-xl border border-white/[0.08] overflow-x-auto shadow-inner leading-relaxed">
                 {JSON.stringify(clinicalJson, null, 2)}
               </pre>
             </div>
@@ -173,14 +194,14 @@ export const ReportModal: React.FC<ReportModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-white/[0.08] bg-black/40 flex items-center justify-between text-xs text-slate-400">
+        <div className="px-5 py-3 border-t border-white/[0.08] bg-black/30 flex items-center justify-between text-xs text-slate-400">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-[11px] text-slate-400">Fonte da Verdade: JSON Clínico Normalizado pós-revisão humana.</span>
+            <span className="text-[11px] text-slate-400">Notion Canonical JSON validado para prontuário eletrônico.</span>
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-white/[0.08] hover:bg-white/[0.12] text-slate-200 font-medium text-xs transition border border-white/[0.06]"
+            className="px-4 py-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.1] text-slate-200 font-medium text-xs transition border border-white/[0.08] cursor-pointer"
           >
             Fechar
           </button>
@@ -189,4 +210,5 @@ export const ReportModal: React.FC<ReportModalProps> = ({
     </div>
   );
 };
+
 

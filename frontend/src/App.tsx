@@ -7,13 +7,13 @@ import { QualityBadge } from './components/quality/QualityBadge';
 import { ReportModal } from './components/report/ReportModal';
 import { FALLBACK_SAMPLES, FALLBACK_ANALYSES, generateFallbackReport } from './data/fallbackData';
 import { 
-  Activity, 
   UploadCloud, 
   ChevronDown, 
   RefreshCw,
   ShieldAlert,
   Smartphone
 } from 'lucide-react';
+
 
 export const App: React.FC = () => {
   const [samples, setSamples] = useState<SampleItem[]>([]);
@@ -262,31 +262,33 @@ export const App: React.FC = () => {
 
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-[#07090e] text-slate-100 overflow-hidden font-sans">
-      {/* 1. Header Global Superior Clínico */}
-      <header className="flex items-center justify-between px-4 py-2.5 clinical-glass border-b border-slate-800/80 z-30">
+    <div className="flex flex-col h-screen w-screen bg-[#070f24] text-slate-100 overflow-hidden font-sans">
+      {/* 1. Header Global Estilo Notion Workspace */}
+      <header className="flex items-center justify-between px-4 py-2.5 notion-glass border-b border-white/[0.08] z-30">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white shadow-lg shadow-sky-500/25 ring-1 ring-white/20">
-            <Activity className="w-4 h-4" />
+          {/* Notion Page Icon */}
+          <div className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/[0.1] flex items-center justify-center text-base shadow-sm">
+            🦷
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-sm font-black tracking-tight text-slate-100 m-0 font-mono">
-                PANORÂMICA & PERIAPICAL
-              </h1>
-              <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-800/80">
-                AI RADIOLOGY PRO
+            {/* Notion Breadcrumbs */}
+            <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+              <span>Workstation</span>
+              <span className="text-slate-600">/</span>
+              <span className="text-slate-100 font-semibold tracking-tight">Panorâmica & Periapical AI</span>
+              <span className="ml-1 text-[10px] font-mono px-1.5 py-0.2 rounded notion-tag-purple font-medium">
+                Notion OS
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 font-mono">
-              FDI 32 Teeth • OralXrays-9 (YOLO11) • PRAD MICCAI 9 Layers
+            <p className="text-[10px] text-slate-400 font-mono mt-0.5">
+              FDI 32 • OralXrays-9 • PRAD 9 Camadas
             </p>
           </div>
         </div>
 
-        {/* Status dos Modelos e Telemetria em Tempo Real */}
-        <div className="hidden lg:flex items-center gap-3 text-[11px] font-mono clinical-glass px-3 py-1.5 rounded-lg border border-slate-800/90 shadow-inner">
-          <div className="flex items-center gap-1.5">
+        {/* Status dos Modelos e Telemetria em Tags Notion */}
+        <div className="hidden lg:flex items-center gap-2 text-[11px] font-mono">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08]">
             <span
               className={`w-2 h-2 rounded-full ${
                 backendStatus.dental_fdi_onnx ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-beacon' : 'bg-rose-500'
@@ -294,8 +296,8 @@ export const App: React.FC = () => {
             />
             <span className="text-slate-300">FDI ONNX</span>
           </div>
-          <div className="w-px h-3 bg-slate-800" />
-          <div className="flex items-center gap-1.5">
+
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08]">
             <span
               className={`w-2 h-2 rounded-full ${
                 backendStatus.pathology_onnx ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-beacon' : 'bg-rose-500'
@@ -303,8 +305,8 @@ export const App: React.FC = () => {
             />
             <span className="text-slate-300">OralXrays-9</span>
           </div>
-          <div className="w-px h-3 bg-slate-800" />
-          <div className="flex items-center gap-1.5">
+
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08]">
             <span
               className={`w-2 h-2 rounded-full ${
                 backendStatus.periapical_prad_pipeline ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-beacon' : 'bg-rose-500'
@@ -312,36 +314,34 @@ export const App: React.FC = () => {
             />
             <span className="text-slate-300">PRAD 9</span>
           </div>
+
           {analysis && (
-            <>
-              <div className="w-px h-3 bg-slate-800" />
-              <div className="text-sky-400 font-semibold font-tabular">
-                {analysis.meta.inference_duration_ms}ms
-              </div>
-            </>
+            <div className="px-2 py-1 rounded-md notion-tag-sky font-semibold font-tabular">
+              {analysis.meta.inference_duration_ms}ms
+            </div>
           )}
         </div>
 
         {/* Seletor de Casos Reais & Upload */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <div className="relative">
             <select
               value={selectedSample}
               onChange={e => analyzeSample(e.target.value)}
               disabled={isLoading}
-              className="appearance-none bg-slate-900/90 border border-slate-700/80 hover:border-slate-600 text-slate-200 text-xs rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:ring-1 focus:ring-sky-500 font-medium cursor-pointer shadow-sm"
+              className="appearance-none bg-white/[0.05] border border-white/[0.1] hover:border-white/[0.2] text-slate-200 text-xs rounded-lg pl-3 pr-8 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#5645d4] font-medium cursor-pointer shadow-sm transition"
             >
               <optgroup label="Radiografias Panorâmicas (OralXrays-9 / DENTEX)">
                 {samples.filter(s => s.modality === 'panoramic' || !s.id.includes('periapical')).map(s => (
-                  <option key={s.id} value={s.id}>
-                    {s.filename} ({s.description.slice(0, 32)}...)
+                  <option key={s.id} value={s.id} className="bg-[#0a1530] text-slate-100">
+                    {s.filename} ({s.description.slice(0, 30)}...)
                   </option>
                 ))}
               </optgroup>
               <optgroup label="Radiografias Periapicais (PRAD Benchmark MICCAI)">
                 {samples.filter(s => s.modality === 'periapical' || s.id.includes('periapical')).map(s => (
-                  <option key={s.id} value={s.id}>
-                    {s.filename} ({s.description.slice(0, 32)}...)
+                  <option key={s.id} value={s.id} className="bg-[#0a1530] text-slate-100">
+                    {s.filename} ({s.description.slice(0, 30)}...)
                   </option>
                 ))}
               </optgroup>
@@ -352,7 +352,7 @@ export const App: React.FC = () => {
           {deferredPrompt && (
             <button
               onClick={handleInstallPwa}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-md shadow-emerald-500/25 animate-pulse cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition cursor-pointer"
               title="Instalar Panorâmica AI como aplicativo PWA neste dispositivo"
             >
               <Smartphone className="w-3.5 h-3.5" />
@@ -361,13 +361,14 @@ export const App: React.FC = () => {
           )}
 
           {isPwaInstalled && (
-            <span className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-mono font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 rounded-lg">
+            <span className="hidden sm:flex items-center gap-1 px-2 py-1 text-[11px] font-mono font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 rounded-md">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               PWA Ativo
             </span>
           )}
 
-          <label className="cursor-pointer flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow-md shadow-sky-500/20 active:scale-95">
+          {/* Botão de Upload com Estilo Notion Primary */}
+          <label className="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg btn-notion-primary active:scale-95 transition">
             <UploadCloud className="w-4 h-4" />
             <span className="hidden sm:inline">Upload Exame</span>
             <input
@@ -379,6 +380,7 @@ export const App: React.FC = () => {
           </label>
         </div>
       </header>
+
 
       {/* 2. Banner de Alerta / Qualidade */}
       {error && (

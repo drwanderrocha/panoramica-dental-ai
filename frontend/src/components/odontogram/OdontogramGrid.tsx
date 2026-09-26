@@ -191,10 +191,10 @@ export const OdontogramGrid: React.FC<OdontogramGridProps> = ({
         onClick={() => onSelectTooth(isSelected ? null : fdi)}
         className={`group relative flex flex-col items-center justify-between p-1.5 rounded-lg border transition-all duration-150 cursor-pointer ${
           isSelected
-            ? 'bg-sky-950/80 border-sky-400 text-sky-200 ring-2 ring-sky-500/50 shadow-lg shadow-sky-500/20 scale-105 z-10'
+            ? 'bg-[#5645d4]/25 border-[#5645d4] text-white ring-2 ring-[#5645d4] shadow-lg shadow-[#5645d4]/30 scale-105 z-10'
             : isDetected
-            ? 'bg-slate-900/90 border-slate-700/70 text-slate-200 hover:border-slate-500 hover:bg-slate-800 hover:scale-[1.02]'
-            : 'bg-slate-950/40 border-dashed border-slate-800/80 text-slate-600 hover:border-slate-700'
+            ? 'bg-white/[0.04] border-white/[0.08] text-slate-200 hover:border-white/[0.2] hover:bg-white/[0.08] hover:scale-[1.02]'
+            : 'bg-black/30 border-dashed border-white/[0.06] text-slate-600 hover:border-white/[0.12]'
         }`}
         style={{ minWidth: '42px', minHeight: '56px' }}
         title={toothTitle}
@@ -202,7 +202,7 @@ export const OdontogramGrid: React.FC<OdontogramGridProps> = ({
       >
         {/* Número FDI em fonte mono tabular com tracking preciso */}
         <span className={`text-[11px] font-mono font-bold tracking-tight font-tabular ${
-          isSelected ? 'text-sky-300 font-extrabold' : isDetected ? 'text-slate-200' : 'text-slate-600'
+          isSelected ? 'text-[#d6b6f6] font-extrabold' : isDetected ? 'text-slate-200' : 'text-slate-600'
         }`}>
           {fdi}
         </span>
@@ -222,19 +222,19 @@ export const OdontogramGrid: React.FC<OdontogramGridProps> = ({
           )}
           {hasStructural && (
             <span
-              className="w-1.5 h-1.5 rounded-full bg-violet-400 ring-1 ring-violet-300/40"
+              className="w-1.5 h-1.5 rounded-full bg-[#d6b6f6] ring-1 ring-purple-300/40"
               title="Achado estrutural (Siso/Impactado)"
             />
           )}
           {hasTreatment && (
             <span
-              className="w-1.5 h-1.5 rounded-full bg-blue-400 ring-1 ring-blue-300/40"
+              className="w-1.5 h-1.5 rounded-full bg-[#7dd3fc] ring-1 ring-sky-300/40"
               title="Tratamento endodôntico (Canal)"
             />
           )}
           {hasDevice && (
             <span
-              className="w-1.5 h-1.5 rounded-full bg-emerald-400 ring-1 ring-emerald-300/40"
+              className="w-1.5 h-1.5 rounded-full bg-[#86efac] ring-1 ring-emerald-300/40"
               title="Prótese / Implante"
             />
           )}
@@ -247,83 +247,71 @@ export const OdontogramGrid: React.FC<OdontogramGridProps> = ({
   };
 
   return (
-    <div className="clinical-glass rounded-xl p-3 shadow-xl border border-slate-800/80">
+    <div className="notion-glass rounded-xl p-3 shadow-xl border border-white/[0.09]">
       {/* Header do Odontograma */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-sky-400 animate-beacon" />
-          <h3 className="text-xs font-semibold tracking-wide text-slate-200 uppercase font-mono">
+          <span className="w-2 h-2 rounded-full bg-[#5645d4] animate-beacon" />
+          <h3 className="text-xs font-semibold tracking-wide text-slate-100 font-sans">
             Odontograma Anatômico FDI
           </h3>
-          <span className="text-[10px] text-slate-500 font-mono">
-            (32 dentes permanentes)
+          <span className="text-[10px] text-slate-400 font-mono">
+            (32 dentes)
           </span>
         </div>
 
-        {/* Legenda de cores dos achados clínicos */}
-        <div className="hidden sm:flex items-center gap-3 text-[10px] font-mono text-slate-400">
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-            Patologia
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-            Canal
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
-            Siso/Incluso
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            Implante
-          </span>
+        {/* Quadrantes com Tags Notion */}
+        <div className="hidden sm:flex items-center gap-2 text-[10px] font-mono">
+          <span className="px-1.5 py-0.5 rounded notion-tag-purple">Q1 Maxila D</span>
+          <span className="px-1.5 py-0.5 rounded notion-tag-sky">Q2 Maxila E</span>
+          <span className="px-1.5 py-0.5 rounded notion-tag-mint">Q3 Mand E</span>
+          <span className="px-1.5 py-0.5 rounded notion-tag-peach">Q4 Mand D</span>
         </div>
       </div>
 
       {/* Grid Odontológico Dividido em Maxila e Mandíbula */}
       <div className="flex flex-col gap-1.5">
         {/* Arcada Superior (Maxila) */}
-        <div className="relative flex items-center justify-center gap-1 p-1 rounded-lg bg-slate-950/40 border border-slate-800/40">
+        <div className="relative flex items-center justify-center gap-1 p-1 rounded-lg bg-black/25 border border-white/[0.05]">
           <span className="absolute left-2 text-[9px] font-mono text-slate-500 uppercase tracking-widest hidden xl:inline">
             Maxila
           </span>
 
-          {/* Quadrante 1 (Direito do Paciente / Esquerda do Observador) */}
+          {/* Quadrante 1 */}
           <div className="flex gap-1">
             {q1.map(fdi => renderToothCell(fdi))}
           </div>
 
           {/* Divisor Central: Linha Média Dental Superior */}
           <div className="flex flex-col items-center justify-center px-1" title="Linha Média Dental">
-            <div className="w-0.5 h-12 bg-sky-500/40 rounded-full" />
-            <span className="text-[8px] font-mono text-sky-400/70 mt-0.5">LM</span>
+            <div className="w-0.5 h-12 bg-[#5645d4]/40 rounded-full" />
+            <span className="text-[8px] font-mono text-[#d6b6f6] mt-0.5">LM</span>
           </div>
 
-          {/* Quadrante 2 (Esquerdo do Paciente / Direita do Observador) */}
+          {/* Quadrante 2 */}
           <div className="flex gap-1">
             {q2.map(fdi => renderToothCell(fdi))}
           </div>
         </div>
 
         {/* Arcada Inferior (Mandíbula) */}
-        <div className="relative flex items-center justify-center gap-1 p-1 rounded-lg bg-slate-950/40 border border-slate-800/40">
+        <div className="relative flex items-center justify-center gap-1 p-1 rounded-lg bg-black/25 border border-white/[0.05]">
           <span className="absolute left-2 text-[9px] font-mono text-slate-500 uppercase tracking-widest hidden xl:inline">
             Mandíbula
           </span>
 
-          {/* Quadrante 4 (Direito do Paciente / Esquerda do Observador) */}
+          {/* Quadrante 4 */}
           <div className="flex gap-1">
             {q4.map(fdi => renderToothCell(fdi))}
           </div>
 
           {/* Divisor Central: Linha Média Dental Inferior */}
           <div className="flex flex-col items-center justify-center px-1" title="Linha Média Dental">
-            <div className="w-0.5 h-12 bg-sky-500/40 rounded-full" />
-            <span className="text-[8px] font-mono text-sky-400/70 mt-0.5">LM</span>
+            <div className="w-0.5 h-12 bg-[#5645d4]/40 rounded-full" />
+            <span className="text-[8px] font-mono text-[#d6b6f6] mt-0.5">LM</span>
           </div>
 
-          {/* Quadrante 3 (Esquerdo do Paciente / Direita do Observador) */}
+          {/* Quadrante 3 */}
           <div className="flex gap-1">
             {q3.map(fdi => renderToothCell(fdi))}
           </div>
@@ -331,13 +319,13 @@ export const OdontogramGrid: React.FC<OdontogramGridProps> = ({
       </div>
 
       {/* Barra de Rodapé do Odontograma com Detalhes do Dente Selecionado */}
-      <div className="mt-2 pt-1.5 border-t border-slate-800/60 flex items-center justify-between text-xs">
+      <div className="mt-2 pt-1.5 border-t border-white/[0.06] flex items-center justify-between text-xs">
         {selectedToothNumber ? (
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-sky-950 text-sky-300 font-mono font-bold border border-sky-800">
+            <span className="px-2 py-0.5 rounded notion-tag-purple font-mono font-semibold">
               Dente {selectedToothNumber}
             </span>
-            <span className="text-slate-300 font-medium">
+            <span className="text-slate-200 font-medium">
               {TOOTH_NAMES[selectedToothNumber] || 'Dente selecionado'}
             </span>
             {teethMap.get(selectedToothNumber) && (
@@ -347,8 +335,8 @@ export const OdontogramGrid: React.FC<OdontogramGridProps> = ({
             )}
           </div>
         ) : (
-          <span className="text-[11px] text-slate-500">
-            Clique em qualquer dente para focalizar na radiografia e filtrar achados.
+          <span className="text-[11px] text-slate-400">
+            Clique em um dente para focalizar no visualizador e filtrar achados.
           </span>
         )}
 
@@ -366,3 +354,4 @@ export const OdontogramGrid: React.FC<OdontogramGridProps> = ({
 };
 
 export default OdontogramGrid;
+

@@ -18,15 +18,15 @@ export const QualityBadge: React.FC<QualityBadgeProps> = ({ quality, modality })
     : modality.detected;
 
   return (
-    <div className="clinical-glass rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-lg border border-slate-800/80">
+    <div className="notion-callout px-3.5 py-2 flex flex-wrap items-center justify-between gap-3 shadow-md border border-white/[0.08] bg-black/20">
       <div className="flex items-center gap-3">
-        {/* Ícone de Conformidade Radiológica */}
-        <div className={`p-1.5 rounded-lg border flex items-center justify-center ${
+        {/* Ícone de Conformidade Radiológica em Caixa Estilo Notion */}
+        <div className={`w-8 h-8 rounded-md border flex items-center justify-center ${
           isOptimal
-            ? 'bg-emerald-950/80 text-emerald-400 border-emerald-700/80 shadow-sm shadow-emerald-950/50'
+            ? 'notion-tag-mint'
             : isAcceptable
-            ? 'bg-amber-950/80 text-amber-400 border-amber-700/80 shadow-sm shadow-amber-950/50'
-            : 'bg-rose-950/80 text-rose-400 border-rose-700/80 shadow-sm shadow-rose-950/50'
+            ? 'notion-tag-peach'
+            : 'notion-tag-rose'
         }`}>
           {isOptimal ? (
             <ShieldCheck className="w-4 h-4" />
@@ -35,28 +35,28 @@ export const QualityBadge: React.FC<QualityBadgeProps> = ({ quality, modality })
           )}
         </div>
 
-        {/* Metadados do Exame */}
+        {/* Metadados do Exame em Propriedades Notion */}
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-100 uppercase tracking-wide font-mono">
+            <span className="text-xs font-semibold text-slate-100 tracking-tight">
               {modalityName}
             </span>
-            <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400 font-tabular">
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded notion-tag-purple font-medium">
               Confiança: {Math.round(modality.confidence * 100)}%
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-400 mt-0.5 font-mono text-[11px]">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 mt-0.5 font-mono text-[11px]">
             <span>
-              Qualidade: <strong className="text-slate-200 font-tabular">{Math.round(quality.score * 100)}%</strong>
+              Score: <strong className="text-slate-200 font-tabular font-semibold">{Math.round(quality.score * 100)}%</strong>
             </span>
             <span className="text-slate-600">•</span>
             <span>
-              Dimensões: <strong className="text-slate-200 font-tabular">{quality.dimensions.width}×{quality.dimensions.height}px</strong>
+              {quality.dimensions.width}×{quality.dimensions.height}px
             </span>
             <span className="text-slate-600">•</span>
             <span>
-              Nitidez Laplaciana: <strong className="text-slate-200 font-tabular">{quality.sharpness}</strong>
+              Laplaciano: <strong className="text-slate-200 font-tabular">{quality.sharpness}</strong>
             </span>
           </div>
         </div>
@@ -65,14 +65,14 @@ export const QualityBadge: React.FC<QualityBadgeProps> = ({ quality, modality })
       {/* Alerta de Qualidade ou Selo de Conformidade */}
       <div>
         {quality.warnings.length > 0 ? (
-          <div className="flex items-center gap-1.5 text-xs text-amber-300 bg-amber-950/50 px-2.5 py-1 rounded-lg border border-amber-800/60 font-medium">
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+          <div className="flex items-center gap-1.5 text-xs notion-tag-peach px-2.5 py-1 rounded-md font-medium">
+            <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
             <span>{quality.warnings[0]}</span>
           </div>
         ) : (
-          <div className="flex items-center gap-1.5 text-xs text-emerald-300 bg-emerald-950/40 px-2.5 py-1 rounded-lg border border-emerald-800/60 font-medium">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-            <span>Imagem com nitidez e contraste ótimos para diagnóstico</span>
+          <div className="flex items-center gap-1.5 text-xs notion-tag-mint px-2.5 py-1 rounded-md font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>Padrão técnico aprovado para diagnóstico clínico</span>
           </div>
         )}
       </div>
@@ -81,3 +81,4 @@ export const QualityBadge: React.FC<QualityBadgeProps> = ({ quality, modality })
 };
 
 export default QualityBadge;
+

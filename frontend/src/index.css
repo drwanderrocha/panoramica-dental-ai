@@ -4,27 +4,39 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-canvas: #07090e;
-  --color-panel: #0d1117;
-  --color-panel-elevated: #131922;
-  --color-panel-border: rgba(255, 255, 255, 0.08);
-  --color-panel-border-hover: rgba(255, 255, 255, 0.16);
+  /* Notion DESIGN.md Core Palette */
+  --color-notion-primary: #5645d4;
+  --color-notion-primary-pressed: #4534b3;
+  --color-notion-primary-deep: #3a2a99;
+  
+  --color-notion-navy: #0a1530;
+  --color-notion-navy-deep: #070f24;
+  --color-notion-navy-mid: #1a2a52;
 
-  --color-cyan-glow: #0ea5e9;
-  --color-emerald-glow: #10b981;
+  --color-notion-charcoal: #37352f;
+  --color-notion-slate: #5d5b54;
+  --color-notion-steel: #787671;
+  --color-notion-stone: #a4a097;
+
+  /* Notion Pastel Database Tag Tints */
+  --color-notion-peach: #ffe8d4;
+  --color-notion-rose: #fde0ec;
+  --color-notion-mint: #d9f3e1;
+  --color-notion-lavender: #e6e0f5;
+  --color-notion-sky: #dcecfa;
+  --color-notion-yellow-bold: #f9e79f;
 }
 
 @layer base {
   :root {
-    --bg-canvas: #07090e;
-    --bg-panel: #0d1117;
-    --bg-panel-elevated: #131922;
-    --border-hairline: rgba(255, 255, 255, 0.08);
-    --border-hairline-hover: rgba(255, 255, 255, 0.16);
-    --accent-cyan: #0ea5e9;
-    --accent-emerald: #10b981;
-    --accent-amber: #f59e0b;
-    --accent-rose: #f43f5e;
+    --bg-canvas: #070f24; /* Notion brand-navy-deep */
+    --bg-panel: #0a1530;  /* Notion brand-navy */
+    --bg-panel-elevated: #111e3f;
+    --border-hairline: rgba(255, 255, 255, 0.09);
+    --border-hairline-hover: rgba(255, 255, 255, 0.18);
+    
+    --notion-primary: #5645d4;
+    --notion-primary-hover: #4534b3;
   }
 
   body {
@@ -36,20 +48,19 @@
     user-select: none;
   }
 
-  /* Números tabulares para alinhamento médico/odontológico perfeito */
   .font-tabular {
     font-variant-numeric: tabular-nums;
   }
 }
 
-/* Custom scrollbars médicas de perfil fino */
+/* Custom scrollbars de perfil fino */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07090e;
+  background: #070f24;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -58,33 +69,95 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.25);
 }
 
-/* Efeito de Vidro Clínico (Glassmorphism Darkroom) */
-.clinical-glass {
-  background: rgba(13, 17, 23, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Notion Dark Surface Glass */
+.notion-glass {
+  background: rgba(10, 21, 48, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
-.clinical-glass-elevated {
-  background: rgba(19, 25, 34, 0.92);
+.notion-glass-elevated {
+  background: rgba(17, 30, 63, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Pulso sutil de sinal para IA Ativa */
+/* Notion Callout Box */
+.notion-callout {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+/* Notion Primary Button (8px radius, signature purple) */
+.btn-notion-primary {
+  background-color: #5645d4;
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(10, 21, 48, 0.3);
+}
+
+.btn-notion-primary:hover {
+  background-color: #4534b3;
+  box-shadow: 0 2px 8px rgba(86, 69, 212, 0.4);
+}
+
+.btn-notion-primary:active {
+  background-color: #3a2a99;
+}
+
+/* Notion Tag Chips */
+.notion-tag-purple {
+  background-color: rgba(230, 224, 245, 0.14);
+  color: #d6b6f6;
+  border: 1px solid rgba(214, 182, 246, 0.25);
+  border-radius: 4px;
+}
+
+.notion-tag-mint {
+  background-color: rgba(217, 243, 225, 0.14);
+  color: #86efac;
+  border: 1px solid rgba(134, 239, 172, 0.25);
+  border-radius: 4px;
+}
+
+.notion-tag-peach {
+  background-color: rgba(255, 232, 212, 0.14);
+  color: #fdba74;
+  border: 1px solid rgba(253, 186, 116, 0.25);
+  border-radius: 4px;
+}
+
+.notion-tag-sky {
+  background-color: rgba(220, 236, 250, 0.14);
+  color: #7dd3fc;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  border-radius: 4px;
+}
+
+.notion-tag-rose {
+  background-color: rgba(253, 224, 236, 0.14);
+  color: #f472b6;
+  border: 1px solid rgba(244, 114, 182, 0.25);
+  border-radius: 4px;
+}
+
+/* Pulso de telemetria IA */
 @keyframes beacon-pulse {
   0%, 100% {
     opacity: 1;
     transform: scale(1);
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.4;
     transform: scale(1.15);
   }
 }
@@ -93,7 +166,8 @@
   animation: beacon-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Foco ativo em Dente / Achado */
-.focus-active-ring {
-  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.8), 0 0 20px rgba(14, 165, 233, 0.35);
+/* Anel de foco Notion */
+.notion-focus-ring {
+  box-shadow: 0 0 0 2px #5645d4, 0 0 16px rgba(86, 69, 212, 0.4);
 }
+

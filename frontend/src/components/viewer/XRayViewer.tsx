@@ -200,7 +200,7 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
         const isToothSelected = selectedToothNumber === tooth.fdi_number;
 
         if (showBoxes) {
-          ctx.strokeStyle = isToothSelected ? '#38bdf8' : 'rgba(56, 189, 248, 0.45)';
+          ctx.strokeStyle = isToothSelected ? '#5645d4' : 'rgba(86, 69, 212, 0.4)';
           ctx.lineWidth = isToothSelected ? 3 / scale : 1.4 / scale;
           if (!isToothSelected) {
             ctx.setLineDash([4 / scale, 4 / scale]);
@@ -208,10 +208,10 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
           ctx.strokeRect(px, py, pw, ph);
           ctx.setLineDash([]);
 
-          // Se selecionado, desenhar cantoneiras de foco estilo mira diagnóstica
+          // Se selecionado, desenhar cantoneiras de foco estilo Notion
           if (isToothSelected) {
             const cornerLen = Math.min(pw, ph) * 0.25;
-            ctx.strokeStyle = '#38bdf8';
+            ctx.strokeStyle = '#5645d4';
             ctx.lineWidth = 3.5 / scale;
             
             // Top-left
@@ -231,7 +231,7 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
         }
 
         if (showFdi) {
-          // Label do FDI em Badge com cantos arredondados
+          // Label do FDI em Badge Notion
           const text = `${tooth.fdi_number}`;
           const fontSize = Math.max(11, Math.min(20, 13 / scale));
           ctx.font = `700 ${fontSize}px "JetBrains Mono", monospace`;
@@ -242,18 +242,19 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
           const bHeight = fontSize + 4;
           const bWidth = textW + 8;
 
-          ctx.fillStyle = isToothSelected ? '#0284c7' : 'rgba(11, 15, 23, 0.88)';
+          ctx.fillStyle = isToothSelected ? '#5645d4' : 'rgba(10, 21, 48, 0.9)';
           ctx.beginPath();
-          ctx.roundRect(labelX - 2, labelY - fontSize, bWidth, bHeight, 3 / scale);
+          ctx.roundRect(labelX - 2, labelY - fontSize, bWidth, bHeight, 4 / scale);
           ctx.fill();
 
-          ctx.strokeStyle = isToothSelected ? '#38bdf8' : 'rgba(255, 255, 255, 0.15)';
+          ctx.strokeStyle = isToothSelected ? '#d6b6f6' : 'rgba(255, 255, 255, 0.15)';
           ctx.lineWidth = 1 / scale;
           ctx.stroke();
 
-          ctx.fillStyle = isToothSelected ? '#ffffff' : '#e2e8f0';
+          ctx.fillStyle = '#ffffff';
           ctx.fillText(text, labelX + 2, labelY - 2);
         }
+
       });
     }
 
@@ -480,31 +481,31 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col bg-[#06080d] rounded-xl overflow-hidden border border-slate-800/90 shadow-2xl">
-      {/* HUD Superior Clínico com Glassmorphism */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-3.5 py-2.5 clinical-glass border-b border-slate-800/80 z-20">
+    <div className="relative w-full h-full flex flex-col bg-[#070f24] rounded-xl overflow-hidden border border-white/[0.09] shadow-2xl">
+      {/* HUD Superior Estilo Notion */}
+      <div className="flex flex-wrap items-center justify-between gap-3 px-3.5 py-2 notion-glass border-b border-white/[0.08] z-20">
         
         {/* Grupo 1: Controles de Zoom & Visualização */}
-        <div className="flex items-center gap-1">
-          <div className="flex items-center bg-slate-900/90 p-0.5 rounded-lg border border-slate-800 shadow-inner">
+        <div className="flex items-center gap-1.5">
+          <div className="flex items-center bg-white/[0.04] p-0.5 rounded-md border border-white/[0.08]">
             <button
               onClick={() => setScale(s => Math.min(s * 1.25, 8.0))}
-              className="p-1.5 rounded-md hover:bg-slate-800 text-slate-300 hover:text-slate-100 transition cursor-pointer"
+              className="p-1.5 rounded hover:bg-white/[0.08] text-slate-300 hover:text-slate-100 transition cursor-pointer"
               title="Aproximar (Zoom In)"
             >
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setScale(s => Math.max(s * 0.8, 0.2))}
-              className="p-1.5 rounded-md hover:bg-slate-800 text-slate-300 hover:text-slate-100 transition cursor-pointer"
+              className="p-1.5 rounded hover:bg-white/[0.08] text-slate-300 hover:text-slate-100 transition cursor-pointer"
               title="Afastar (Zoom Out)"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
-            <div className="w-px h-3.5 bg-slate-800 mx-0.5" />
+            <div className="w-px h-3.5 bg-white/[0.08] mx-0.5" />
             <button
               onClick={() => fitToScreen()}
-              className="px-2 py-1 text-[11px] font-mono font-medium rounded-md hover:bg-slate-800 text-slate-300 hover:text-sky-300 transition cursor-pointer flex items-center gap-1"
+              className="px-2 py-1 text-[11px] font-mono font-medium rounded hover:bg-white/[0.08] text-slate-300 hover:text-[#d6b6f6] transition cursor-pointer flex items-center gap-1"
               title="Ajustar ao Enquadramento"
             >
               <Maximize2 className="w-3 h-3" />
@@ -517,14 +518,14 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
                 setInvert(false);
                 fitToScreen();
               }}
-              className="p-1.5 rounded-md hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition cursor-pointer"
+              className="p-1.5 rounded hover:bg-white/[0.08] text-slate-400 hover:text-slate-200 transition cursor-pointer"
               title="Resetar Posição e Filtros"
             >
               <RotateCcw className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          <span className="hidden sm:inline-block px-2 py-1 rounded bg-slate-900/90 border border-slate-800 text-[11px] font-mono text-sky-400 font-tabular">
+          <span className="hidden sm:inline-block px-2 py-1 rounded bg-white/[0.04] border border-white/[0.08] text-[11px] font-mono text-[#7dd3fc] font-tabular">
             {Math.round(scale * 100)}%
           </span>
         </div>
@@ -535,12 +536,12 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
             onClick={() => setShowTeeth(v => !v)}
             className={`px-2 py-1 text-xs rounded-md font-medium transition cursor-pointer flex items-center gap-1 border ${
               showTeeth
-                ? 'bg-slate-800/90 text-sky-300 border-sky-500/40'
-                : 'bg-slate-900/60 text-slate-500 border-slate-800 hover:text-slate-300'
+                ? 'bg-white/[0.12] text-slate-100 border-white/[0.2] shadow-sm'
+                : 'bg-white/[0.03] text-slate-400 border-transparent hover:text-slate-200'
             }`}
             title="Alternar Deteção dos Dentes"
           >
-            <span className={`w-1.5 h-1.5 rounded-full ${showTeeth ? 'bg-sky-400' : 'bg-slate-600'}`} />
+            <span className={`w-1.5 h-1.5 rounded-full ${showTeeth ? 'bg-[#5645d4]' : 'bg-slate-600'}`} />
             FDI
           </button>
 
@@ -548,22 +549,22 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
             onClick={() => setShowFindings(v => !v)}
             className={`px-2 py-1 text-xs rounded-md font-medium transition cursor-pointer flex items-center gap-1 border ${
               showFindings
-                ? 'bg-amber-950/80 text-amber-300 border-amber-600/50 shadow-sm shadow-amber-900/20'
-                : 'bg-slate-900/60 text-slate-500 border-slate-800 hover:text-slate-300'
+                ? 'notion-tag-peach border-orange-400/40 shadow-sm'
+                : 'bg-white/[0.03] text-slate-400 border-transparent hover:text-slate-200'
             }`}
             title="Alternar Achados Patológicos e Restauradores"
           >
-            <span className={`w-1.5 h-1.5 rounded-full ${showFindings ? 'bg-amber-400 animate-pulse' : 'bg-slate-600'}`} />
+            <span className={`w-1.5 h-1.5 rounded-full ${showFindings ? 'bg-orange-400 animate-pulse' : 'bg-slate-600'}`} />
             Achados ({findings.filter(f => f.status !== 'rejected').length})
           </button>
 
           {segmentations && segmentations.length > 0 && (
             <button
               onClick={() => setShowSegmentations(v => !v)}
-              className={`px-2.5 py-1 text-xs rounded-md font-semibold transition cursor-pointer flex items-center gap-1.5 border ${
+              className={`px-2.5 py-1 text-xs rounded-md font-medium transition cursor-pointer flex items-center gap-1.5 border ${
                 showSegmentations
-                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-600/60 shadow-md shadow-emerald-950/40'
-                  : 'bg-slate-900/60 text-slate-500 border-slate-800 hover:text-slate-300'
+                  ? 'notion-tag-mint border-emerald-400/40 shadow-sm'
+                  : 'bg-white/[0.03] text-slate-400 border-transparent hover:text-slate-200'
               }`}
               title="Segmentação em 9 Camadas Anatômicas (Benchmark PRAD MICCAI)"
             >
@@ -579,12 +580,12 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
             onClick={() => setInvert(v => !v)}
             className={`px-2.5 py-1 text-xs rounded-md transition cursor-pointer flex items-center gap-1.5 border ${
               invert
-                ? 'bg-cyan-950 text-cyan-200 border-cyan-500/60 shadow-sm'
-                : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:bg-slate-800 hover:text-slate-100'
+                ? 'notion-tag-purple border-[#5645d4]/60 shadow-sm'
+                : 'bg-white/[0.04] text-slate-300 border-white/[0.08] hover:bg-white/[0.08] hover:text-slate-100'
             }`}
             title="Inverter cores (Negativo / Positivo para leitura periapical)"
           >
-            <Contrast className="w-3.5 h-3.5 text-cyan-400" />
+            <Contrast className="w-3.5 h-3.5 text-[#d6b6f6]" />
             <span className="font-medium">Inverter</span>
           </button>
 
@@ -594,8 +595,8 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
               onClick={() => setShowFiltersMenu(v => !v)}
               className={`p-1.5 rounded-md border transition cursor-pointer flex items-center gap-1 ${
                 brightness !== 100 || contrast !== 100
-                  ? 'bg-sky-950/80 border-sky-500/50 text-sky-300'
-                  : 'bg-slate-900/90 border-slate-800 text-slate-400 hover:text-slate-200'
+                  ? 'notion-tag-sky border-sky-400/40'
+                  : 'bg-white/[0.04] border-white/[0.08] text-slate-400 hover:text-slate-200'
               }`}
               title="Ajuste fino de Brilho e Contraste"
             >
@@ -604,13 +605,13 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
 
             {/* Menu Popover de Sliders */}
             {showFiltersMenu && (
-              <div className="absolute right-0 top-9 w-60 p-3 clinical-glass-elevated rounded-xl z-30 flex flex-col gap-2.5 text-xs">
+              <div className="absolute right-0 top-9 w-60 p-3 notion-glass-elevated rounded-xl z-30 flex flex-col gap-2.5 text-xs">
                 <div className="flex items-center justify-between text-slate-300 font-medium">
                   <span className="flex items-center gap-1.5">
                     <Sun className="w-3.5 h-3.5 text-amber-400" />
                     Brilho
                   </span>
-                  <span className="font-mono text-sky-400 font-tabular">{brightness}%</span>
+                  <span className="font-mono text-[#7dd3fc] font-tabular">{brightness}%</span>
                 </div>
                 <input
                   type="range"
@@ -618,15 +619,15 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
                   max="200"
                   value={brightness}
                   onChange={e => setBrightness(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-400"
+                  className="w-full h-1.5 bg-black/40 rounded-lg appearance-none cursor-pointer accent-[#5645d4]"
                 />
 
                 <div className="flex items-center justify-between text-slate-300 font-medium mt-1">
                   <span className="flex items-center gap-1.5">
-                    <Contrast className="w-3.5 h-3.5 text-cyan-400" />
+                    <Contrast className="w-3.5 h-3.5 text-[#d6b6f6]" />
                     Contraste
                   </span>
-                  <span className="font-mono text-sky-400 font-tabular">{contrast}%</span>
+                  <span className="font-mono text-[#7dd3fc] font-tabular">{contrast}%</span>
                 </div>
                 <input
                   type="range"
@@ -634,10 +635,10 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
                   max="200"
                   value={contrast}
                   onChange={e => setContrast(Number(e.target.value))}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-400"
+                  className="w-full h-1.5 bg-black/40 rounded-lg appearance-none cursor-pointer accent-[#5645d4]"
                 />
 
-                <div className="pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                <div className="pt-2 border-t border-white/[0.08] flex justify-between items-center">
                   <button
                     onClick={() => {
                       setBrightness(100);
@@ -649,7 +650,7 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
                   </button>
                   <button
                     onClick={() => setShowFiltersMenu(false)}
-                    className="px-2 py-0.5 rounded bg-sky-900 text-sky-200 text-[11px] font-semibold hover:bg-sky-800"
+                    className="px-2.5 py-1 rounded btn-notion-primary text-[11px] font-medium text-white cursor-pointer"
                   >
                     Fechar
                   </button>
@@ -660,6 +661,7 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
         </div>
       </div>
 
+
       {/* Área Central Interativa do Canvas Darkroom */}
       <div
         ref={containerRef}
@@ -668,34 +670,29 @@ export const XRayViewer: React.FC<XRayViewerProps> = ({
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onClick={handleClick}
-        className={`relative flex-1 w-full h-full overflow-hidden select-none bg-[#05070a] ${
+        className={`relative flex-1 w-full h-full overflow-hidden select-none bg-[#070f24] ${
           isDragging ? 'cursor-grabbing' : 'cursor-crosshair'
         }`}
       >
         <canvas ref={canvasRef} className="block w-full h-full" />
         
-        {/* Cantoneiras Estilizadas de Estação Radiológica */}
-        <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-slate-800/60 pointer-events-none" />
-        <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-slate-800/60 pointer-events-none" />
-        <div className="absolute bottom-8 left-2 w-3 h-3 border-b-2 border-l-2 border-slate-800/60 pointer-events-none" />
-        <div className="absolute bottom-8 right-2 w-3 h-3 border-b-2 border-r-2 border-slate-800/60 pointer-events-none" />
-
         {/* HUD Inferior: Coordenadas e Dicas Clínicas */}
         <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-slate-400 pointer-events-none">
-          <div className="px-2.5 py-1 clinical-glass rounded-lg border border-slate-800/80 flex items-center gap-2">
-            <Crosshair className="w-3 h-3 text-sky-400" />
+          <div className="px-2.5 py-1 notion-glass rounded-md border border-white/[0.08] flex items-center gap-2">
+            <Crosshair className="w-3 h-3 text-[#d6b6f6]" />
             <span>Arraste para mover • Scroll para zoom • Clique no dente/achado</span>
           </div>
 
           {mouseCoords && (
-            <div className="hidden md:flex px-2.5 py-1 clinical-glass rounded-lg border border-slate-800/80 items-center gap-2 font-tabular">
+            <div className="hidden md:flex px-2.5 py-1 notion-glass rounded-md border border-white/[0.08] items-center gap-2 font-tabular">
               <span className="text-slate-500">COORD:</span>
-              <span className="text-slate-300">X: {mouseCoords.x}px</span>
-              <span className="text-slate-300">Y: {mouseCoords.y}px</span>
+              <span className="text-slate-200">X: {mouseCoords.x}px</span>
+              <span className="text-slate-200">Y: {mouseCoords.y}px</span>
             </div>
           )}
         </div>
       </div>
+
     </div>
   );
 };
