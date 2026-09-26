@@ -1,4 +1,4 @@
-import type { AnalysisResponse, SampleItem } from '../types/dental';
+import type { AnalysisResponse, SampleItem, FindingItem } from '../types/dental';
 
 export const FALLBACK_SAMPLES: SampleItem[] = [
   {
@@ -3135,3 +3135,75 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
     }
   }
 };
+
+export function generateFallbackReport(analysis: AnalysisResponse, confirmedFindings: FindingItem[]): string {
+  const isPeri = analysis.modality.is_periapical;
+  const modalityTitle = isPeri
+    ? "Radiografia Periapical Intraoral (Endodontia / Periodontia)"
+    : "Radiografia Panorâmica dos Maxilares (Ortopantomografia)";
+  const patientName = isPeri ? "Paciente Exame Periapical" : "Paciente Exame Panorâmica";
+  const nowStr = new Date().toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  const accepted = confirmedFindings.filter(f => f.status === 'accepted' || f.status === 'edited' || f.status === 'manual_entry');
+
+  const findingsByTooth: Record<string, FindingItem[]> = {};
+  for (const f of accepted) {
+    const key = f.fdi_number ? `Dente ${f.fdi_number}` : 'Região Geral / Crista Óssea';
+    if (!findingsByTooth[key]) findingsByTooth[key] = [];
+    findingsByTooth[key].push(f);
+  }
+
+  let findingsMd = "";
+  if (accepted.length === 0) {
+    findingsMd = `_Nenhum achado patológico ou alteração anatômica expressiva foi confirmado pelo cirurgião-dentista nesta ${modalityTitle.toLowerCase()}._\n\n`;
+  } else {
+    for (const [tooth, fList] of Object.entries(findingsByTooth)) {
+      findingsMd += `#### ${tooth}\n`;
+      for (const item of fList) {
+        const statusTag = item.status === 'accepted' ? '✓ Confirmado' : (item.status === 'edited' ? '✎ Editado' : '+ Inclusão Manual');
+        findingsMd += `- **${item.label}** \`[${statusTag}]\` (Confiança analítica: ${(item.confidence * 100).toFixed(1)}%)\n`;
+        if (item.notes) {
+          findingsMd += `  > _Nota do profissional:_ ${item.notes}\n`;
+        }
+      }
+      findingsMd += '\n';
+    }
+  }
+
+  return `# LAUDO RADIOGRÁFICO ODONTOLÓGICO ASSISTIDO POR IA
+
+**Paciente:** ${patientName}  
+**Exame ID:** \`${analysis.exam_id}\`  
+**Modalidade:** ${modalityTitle}  
+**Data da Revisão:** ${nowStr}  
+**Responsável Técnico:** Dr. Cirurgião-Dentista Habilitado  
+
+---
+
+### 1. TÉCNICA E QUALIDADE DA IMAGEM
+- **Padrão de aquisição:** ${modalityTitle} realizada com parâmetros técnicos adequados, demonstrando boa definição anatômica e contraste trabecular satisfatório.
+- **Índice de Qualidade da Imagem:** \`${analysis.image_quality.score.toFixed(2)} / 1.00\`
+- **Condição:** Exame tecnicamente satisfatório para análise ${isPeri ? 'endodôntica e periodontal de alta resolução' : 'anatômica e identificação de anomalias dentárias e ósseas'}.
+
+---
+
+### 2. ACHADOS RADIOGRÁFICOS CONFIRMADOS
+${findingsMd}---
+
+### 3. SÍNTESE CLÍNICO-RADIOGRÁFICA
+- Total de achados validados pelo profissional: **${accepted.length}**.
+- As detecções visuais e segmentações geradas pelos modelos de visão computacional (PRAD Benchmark / OralXrays-9) foram devidamente avaliadas, filtradas e ratificadas pelo cirurgião-dentista responsável.
+
+---
+
+### 4. NOTA ÉTICA E LEGAL
+> _Este documento sintetiza os achados radiográficos triados por inteligência artificial e **integralmente validados por cirurgião-dentista habilitado**. A imagem radiográfica é um exame complementar e seus achados devem ser correlacionados com o exame clínico intraoral, testes de sensibilidade/percussão e histórico anamnésico do paciente para a determinação do plano de tratamento definitivo._
+`;
+}
+

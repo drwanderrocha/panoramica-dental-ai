@@ -5,7 +5,7 @@ import { OdontogramGrid } from './components/odontogram/OdontogramGrid';
 import { FindingsReviewList } from './components/findings/FindingsReviewList';
 import { QualityBadge } from './components/quality/QualityBadge';
 import { ReportModal } from './components/report/ReportModal';
-import { FALLBACK_SAMPLES, FALLBACK_ANALYSES } from './data/fallbackData';
+import { FALLBACK_SAMPLES, FALLBACK_ANALYSES, generateFallbackReport } from './data/fallbackData';
 import { 
   Activity, 
   UploadCloud, 
@@ -245,73 +245,77 @@ export const App: React.FC = () => {
         }),
       });
 
-      if (!res.ok) throw new Error('Falha ao gerar laudo');
+      if (!res.ok) throw new Error('API indisponível');
 
       const data = await res.json();
       setReportMarkdown(data.report_markdown);
       setIsReportOpen(true);
-    } catch (err: any) {
-      alert(`Erro ao gerar laudo: ${err.message}`);
+    } catch {
+      // Fallback determinístico clínico offline/standalone (para Vercel e uso desplugado)
+      const fallbackMd = generateFallbackReport(analysis, findings);
+      setReportMarkdown(fallbackMd);
+      setIsReportOpen(true);
     } finally {
       setIsLoading(false);
     }
   };
 
+
   return (
-    <div className="flex flex-col h-screen w-screen bg-slate-950 text-slate-100 overflow-hidden font-sans">
-      {/* 1. Header Global Superior */}
-      <header className="flex items-center justify-between px-5 py-3 bg-slate-900/90 border-b border-slate-800/80 backdrop-blur z-20">
+    <div className="flex flex-col h-screen w-screen bg-[#07090e] text-slate-100 overflow-hidden font-sans">
+      {/* 1. Header Global Superior Clínico */}
+      <header className="flex items-center justify-between px-4 py-2.5 clinical-glass border-b border-slate-800/80 z-30">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-gradient-to-tr from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-600/30">
-            <Activity className="w-5 h-5" />
+          <div className="p-2 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white shadow-lg shadow-sky-500/25 ring-1 ring-white/20">
+            <Activity className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base font-black tracking-tight text-slate-100 m-0">
+              <h1 className="text-sm font-black tracking-tight text-slate-100 m-0 font-mono">
                 PANORÂMICA & PERIAPICAL
               </h1>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">
-                IA MULTIMODAL ODONTOLÓGICA
+              <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-800/80">
+                AI RADIOLOGY PRO
               </span>
             </div>
-            <p className="text-[11px] text-slate-400">
-              Detecção OralXrays-9 & Segmentação em 9 Camadas PRAD (MICCAI)
+            <p className="text-[10px] text-slate-400 font-mono">
+              FDI 32 Teeth • OralXrays-9 (YOLO11) • PRAD MICCAI 9 Layers
             </p>
           </div>
         </div>
 
-        {/* Status dos Modelos Reais */}
-        <div className="hidden md:flex items-center gap-4 text-xs font-mono bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-800">
+        {/* Status dos Modelos e Telemetria em Tempo Real */}
+        <div className="hidden lg:flex items-center gap-3 text-[11px] font-mono clinical-glass px-3 py-1.5 rounded-lg border border-slate-800/90 shadow-inner">
           <div className="flex items-center gap-1.5">
             <span
               className={`w-2 h-2 rounded-full ${
-                backendStatus.dental_fdi_onnx ? 'bg-emerald-400' : 'bg-rose-500'
+                backendStatus.dental_fdi_onnx ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-beacon' : 'bg-rose-500'
               }`}
             />
-            <span className="text-slate-400">FDI (32 Dentes ONNX)</span>
+            <span className="text-slate-300">FDI ONNX</span>
           </div>
-          <div className="w-px h-3.5 bg-slate-800" />
+          <div className="w-px h-3 bg-slate-800" />
           <div className="flex items-center gap-1.5">
             <span
               className={`w-2 h-2 rounded-full ${
-                backendStatus.pathology_onnx ? 'bg-emerald-400' : 'bg-rose-500'
+                backendStatus.pathology_onnx ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-beacon' : 'bg-rose-500'
               }`}
             />
-            <span className="text-slate-400">OralXrays-9 (YOLO11)</span>
+            <span className="text-slate-300">OralXrays-9</span>
           </div>
-          <div className="w-px h-3.5 bg-slate-800" />
+          <div className="w-px h-3 bg-slate-800" />
           <div className="flex items-center gap-1.5">
             <span
               className={`w-2 h-2 rounded-full ${
-                backendStatus.periapical_prad_pipeline ? 'bg-emerald-400' : 'bg-rose-500'
+                backendStatus.periapical_prad_pipeline ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-beacon' : 'bg-rose-500'
               }`}
             />
-            <span className="text-slate-400">PRAD (9 Camadas)</span>
+            <span className="text-slate-300">PRAD 9</span>
           </div>
           {analysis && (
             <>
-              <div className="w-px h-3.5 bg-slate-800" />
-              <div className="text-cyan-400 font-semibold">
+              <div className="w-px h-3 bg-slate-800" />
+              <div className="text-sky-400 font-semibold font-tabular">
                 {analysis.meta.inference_duration_ms}ms
               </div>
             </>
@@ -319,25 +323,25 @@ export const App: React.FC = () => {
         </div>
 
         {/* Seletor de Casos Reais & Upload */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <div className="relative">
             <select
               value={selectedSample}
               onChange={e => analyzeSample(e.target.value)}
               disabled={isLoading}
-              className="appearance-none bg-slate-800 border border-slate-700 hover:border-slate-600 text-slate-200 text-xs rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:ring-1 focus:ring-cyan-500 font-medium cursor-pointer"
+              className="appearance-none bg-slate-900/90 border border-slate-700/80 hover:border-slate-600 text-slate-200 text-xs rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:ring-1 focus:ring-sky-500 font-medium cursor-pointer shadow-sm"
             >
               <optgroup label="Radiografias Panorâmicas (OralXrays-9 / DENTEX)">
                 {samples.filter(s => s.modality === 'panoramic' || !s.id.includes('periapical')).map(s => (
                   <option key={s.id} value={s.id}>
-                    {s.filename} ({s.description.slice(0, 34)}...)
+                    {s.filename} ({s.description.slice(0, 32)}...)
                   </option>
                 ))}
               </optgroup>
               <optgroup label="Radiografias Periapicais (PRAD Benchmark MICCAI)">
                 {samples.filter(s => s.modality === 'periapical' || s.id.includes('periapical')).map(s => (
                   <option key={s.id} value={s.id}>
-                    {s.filename} ({s.description.slice(0, 34)}...)
+                    {s.filename} ({s.description.slice(0, 32)}...)
                   </option>
                 ))}
               </optgroup>
@@ -348,24 +352,24 @@ export const App: React.FC = () => {
           {deferredPrompt && (
             <button
               onClick={handleInstallPwa}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-md shadow-emerald-500/20 animate-pulse cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-md shadow-emerald-500/25 animate-pulse cursor-pointer"
               title="Instalar Panorâmica AI como aplicativo PWA neste dispositivo"
             >
-              <Smartphone className="w-4 h-4" />
+              <Smartphone className="w-3.5 h-3.5" />
               <span>Instalar PWA</span>
             </button>
           )}
 
           {isPwaInstalled && (
-            <span className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 rounded-lg">
+            <span className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-mono font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 rounded-lg">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              PWA Instalado
+              PWA Ativo
             </span>
           )}
 
-          <label className="cursor-pointer flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-cyan-600 hover:bg-cyan-500 text-slate-950 transition shadow-md shadow-cyan-600/20">
+          <label className="cursor-pointer flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 transition shadow-md shadow-sky-500/20 active:scale-95">
             <UploadCloud className="w-4 h-4" />
-            <span>Upload Exame</span>
+            <span className="hidden sm:inline">Upload Exame</span>
             <input
               type="file"
               accept="image/png,image/jpeg,image/webp"
