@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    
+    <!-- Meta tags PWA & Mobile -->
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Panorâmica AI" />
+    <meta name="application-name" content="Panorâmica AI" />
+    <meta name="description" content="Plataforma de IA assistiva para leitura e organização de achados em radiografias odontológicas (Panorâmica OralXrays-9 & Periapical PRAD) com numeração FDI." />
+    
+    <title>Panorâmica & Periapical — Dental AI</title>
+  </head>
+  <body class="bg-slate-950 text-slate-100 antialiased select-none">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Registrar Service Worker para PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(
+            (registration) => {
+              console.log('[PWA] ServiceWorker registrado com sucesso:', registration.scope);
+            },
+            (err) => {
+              console.log('[PWA] Falha ao registrar ServiceWorker:', err);
+            }
+          );
+        });
+      }
+    </script>
+  </body>
+</html>
