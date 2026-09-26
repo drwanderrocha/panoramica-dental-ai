@@ -237,19 +237,12 @@ export const App: React.FC = () => {
       const isPanoramic = ar >= 1.35;
       const modalityStr = isPanoramic ? 'panoramic' : 'periapical';
 
-      // Clona template odontograma FDI calibrado para a modalidade
-      const templateAnalysis = isPanoramic
-        ? FALLBACK_ANALYSES['sample_panoramic_01.jpg']
-        : FALLBACK_ANALYSES['periapical/sample_periapical_01_lesao_apical.jpg'];
-
-      const teethTemplate = templateAnalysis?.teeth
-        ? JSON.parse(JSON.stringify(templateAnalysis.teeth))
-        : [];
-
       const examId = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
         ? crypto.randomUUID()
         : `exam-${Date.now()}`;
 
+      // No modo offline/standalone (sem backend ONNX ativo), mantemos teeth: [] para não projetar
+      // bounding boxes estáticas de outro exame sobre a imagem enviada pelo cirurgião-dentista.
       const clientAnalysis: AnalysisResponse = {
         exam_id: examId,
         image_url: localUrl,
@@ -273,11 +266,11 @@ export const App: React.FC = () => {
           dimensions: { width, height },
           warnings: [],
         },
-        teeth: teethTemplate,
+        teeth: [],
         findings: [],
         meta: {
-          model_pipeline: isPanoramic ? 'OralXrays-9 (Modo Standalone / PWA)' : 'PRAD-9 (Modo Standalone / PWA)',
-          inference_duration_ms: 120,
+          model_pipeline: isPanoramic ? 'Visualizador Clínico HD (Modo Offline / PWA)' : 'Visualizador Clínico HD (Modo Offline / PWA)',
+          inference_duration_ms: 80,
           processed_at: new Date().toISOString(),
         },
       };
