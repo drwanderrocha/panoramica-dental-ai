@@ -209,33 +209,41 @@ class DentalONNXInferencePipeline:
                             else:
                                 q3.append(p)
                     
-                    # Q1: 11 mais próximo do centro (x descresce até 18)
-                    q1.sort(key=lambda t: -t["cx"])
-                    for idx, t in enumerate(q1[:8]):
-                        t["fdi_number"] = 11 + idx
-                        t["presence"] = "present"
-                        teeth_detected.append(t)
+                    def assign_quadrant_fdi(proposals, base_tens, is_left_to_right):
+                        # Ordena a partir da linha média (incisivo central) em direção distal
+                        if is_left_to_right:
+                            proposals.sort(key=lambda t: t["cx"])
+                        else:
+                            proposals.sort(key=lambda t: -t["cx"])
                         
-                    # Q2: 21 mais próximo do centro (x cresce até 28)
-                    q2.sort(key=lambda t: t["cx"])
-                    for idx, t in enumerate(q2[:8]):
-                        t["fdi_number"] = 21 + idx
-                        t["presence"] = "present"
-                        teeth_detected.append(t)
-                        
-                    # Q4: 41 mais próximo do centro (x descresce até 48)
-                    q4.sort(key=lambda t: -t["cx"])
-                    for idx, t in enumerate(q4[:8]):
-                        t["fdi_number"] = 41 + idx
-                        t["presence"] = "present"
-                        teeth_detected.append(t)
-                        
-                    # Q3: 31 mais próximo do centro (x cresce até 38)
-                    q3.sort(key=lambda t: t["cx"])
-                    for idx, t in enumerate(q3[:8]):
-                        t["fdi_number"] = 31 + idx
-                        t["presence"] = "present"
-                        teeth_detected.append(t)
+                        n = len(proposals)
+                        if n == 8:
+                            offsets = [1, 2, 3, 4, 5, 6, 7, 8]
+                        elif n == 7:
+                            # Se 7 dentes com molar distal presente (ausência de 1 pré-molar)
+                            offsets = [1, 2, 3, 4, 6, 7, 8]
+                        elif n == 6:
+                            # 6 dentes: incisivos, canino, 1 pré-molar e 2 molares
+                            offsets = [1, 2, 3, 4, 6, 7]
+                        elif n == 5:
+                            offsets = [1, 2, 3, 4, 6]
+                        else:
+                            offsets = list(range(1, n + 1))
+                            
+                        for idx, t in enumerate(proposals):
+                            if idx < len(offsets):
+                                t["fdi_number"] = base_tens + offsets[idx]
+                                t["presence"] = "present"
+                                teeth_detected.append(t)
+
+                    # Q1: Maxila Direita (x decresce do centro até a borda)
+                    assign_quadrant_fdi(q1, 10, is_left_to_right=False)
+                    # Q2: Maxila Esquerda (x cresce do centro até a borda)
+                    assign_quadrant_fdi(q2, 20, is_left_to_right=True)
+                    # Q4: Mandíbula Direita (x decresce do centro até a borda)
+                    assign_quadrant_fdi(q4, 40, is_left_to_right=False)
+                    # Q3: Mandíbula Esquerda (x cresce do centro até a borda)
+                    assign_quadrant_fdi(q3, 30, is_left_to_right=True)
 
             teeth_detected = sorted(teeth_detected, key=lambda t: t["fdi_number"])
 

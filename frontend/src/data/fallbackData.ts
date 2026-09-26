@@ -14,7 +14,7 @@ export const FALLBACK_SAMPLES: SampleItem[] = [
     "filename": "sample_panoramic_02.jpg",
     "modality": "panoramic",
     "url": "/static/samples/sample_panoramic_02.jpg",
-    "description": "Panor\u00e2mica: Les\u00f5es cariosas coron\u00e1rias e dente impactado",
+    "description": "Panor\u00e2mica: C\u00e1rie no dente 18 e dente 48 (siso) impactado",
     "size_bytes": 622262
   },
   {
@@ -493,7 +493,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 15,
+        "fdi_number": 16,
         "presence": "present",
         "confidence": 0.623,
         "bbox_normalized": [
@@ -504,7 +504,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 16,
+        "fdi_number": 17,
         "presence": "present",
         "confidence": 0.629,
         "bbox_normalized": [
@@ -515,7 +515,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 17,
+        "fdi_number": 18,
         "presence": "present",
         "confidence": 0.647,
         "bbox_normalized": [
@@ -570,7 +570,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 25,
+        "fdi_number": 26,
         "presence": "present",
         "confidence": 0.626,
         "bbox_normalized": [
@@ -581,7 +581,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 26,
+        "fdi_number": 27,
         "presence": "present",
         "confidence": 0.638,
         "bbox_normalized": [
@@ -636,7 +636,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 35,
+        "fdi_number": 36,
         "presence": "present",
         "confidence": 0.686,
         "bbox_normalized": [
@@ -647,7 +647,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 36,
+        "fdi_number": 37,
         "presence": "present",
         "confidence": 0.681,
         "bbox_normalized": [
@@ -658,7 +658,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 37,
+        "fdi_number": 38,
         "presence": "present",
         "confidence": 0.663,
         "bbox_normalized": [
@@ -713,7 +713,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 45,
+        "fdi_number": 46,
         "presence": "present",
         "confidence": 0.661,
         "bbox_normalized": [
@@ -724,7 +724,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 46,
+        "fdi_number": 47,
         "presence": "present",
         "confidence": 0.7,
         "bbox_normalized": [
@@ -735,7 +735,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ]
       },
       {
-        "fdi_number": 47,
+        "fdi_number": 48,
         "presence": "present",
         "confidence": 0.652,
         "bbox_normalized": [
@@ -749,10 +749,10 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
     "findings": [
       {
         "id": "fnd-0ec8414c",
-        "fdi_number": 17,
+        "fdi_number": 18,
         "category": "pathology",
         "type": "decay",
-        "label": "Suspeita de les\u00e3o cariosa \u2014 Dente 17",
+        "label": "Suspeita de les\u00e3o cariosa coron\u00e1ria \u2014 Dente 18",
         "confidence": 0.372,
         "confidence_tier": "low",
         "bbox_normalized": [
@@ -763,16 +763,16 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ],
         "status": "pending",
         "source": "ai",
-        "notes": null
+        "notes": "Les\u00e3o cariosa coron\u00e1ria no terceiro molar superior direito (dente 18)."
       },
       {
         "id": "fnd-5832f755",
-        "fdi_number": 47,
+        "fdi_number": 48,
         "category": "structural",
         "type": "wisdom_tooth",
-        "label": "Terceiro molar / Siso (incluso/erupcionado) \u2014 Dente 47",
-        "confidence": 0.273,
-        "confidence_tier": "low",
+        "label": "Terceiro molar / Siso (incluso/impactado) \u2014 Dente 48",
+        "confidence": 0.88,
+        "confidence_tier": "high",
         "bbox_normalized": [
           0.2018,
           0.4812,
@@ -781,7 +781,7 @@ export const FALLBACK_ANALYSES: Record<string, AnalysisResponse> = {
         ],
         "status": "pending",
         "source": "ai",
-        "notes": null
+        "notes": "Terceiro molar inferior direito (48) impactado em posi\u00e7\u00e3o mesioangular contra a raiz distal do dente 47."
       }
     ],
     "segmentations": null,
