@@ -6,7 +6,7 @@ interface XRayViewerProps {
   imageUrl: string;
   teeth: ToothDetection[];
   findings: FindingItem[];
-  segmentations?: SegmentationLayerItem[];
+  segmentations?: SegmentationLayerItem[] | null;
   selectedFindingId: string | null;
   selectedToothNumber: number | null;
   onSelectFinding: (id: string | null) => void;

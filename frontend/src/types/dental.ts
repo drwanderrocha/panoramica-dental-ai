@@ -75,7 +75,7 @@ export interface AnalysisResponse {
   image_quality: ImageQualityInfo;
   teeth: ToothDetection[];
   findings: FindingItem[];
-  segmentations?: SegmentationLayerItem[];
+  segmentations?: SegmentationLayerItem[] | null;
   image_url: string;
   meta: {
     model_pipeline: string;
