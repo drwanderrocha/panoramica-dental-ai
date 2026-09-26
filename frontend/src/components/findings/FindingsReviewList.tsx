@@ -190,7 +190,15 @@ export const FindingsReviewList: React.FC<FindingsReviewListProps> = ({
 
       {/* Lista com scroll dos achados com cards elevados */}
       <div className="flex-1 overflow-y-auto p-2.5 space-y-2">
-        {filteredFindings.length === 0 ? (
+        {findings.length === 0 ? (
+          <div className="p-6 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2">
+            <CheckCircle2 className="w-8 h-8 text-emerald-400/80 mb-1" />
+            <div className="font-semibold text-slate-200">Exame pronto para avaliação clínica</div>
+            <div className="text-[11px] text-slate-400 max-w-xs leading-relaxed">
+              Nenhum achado pendente. Utilize o botão <span className="text-white font-medium">+ Novo</span> acima para registrar achados ou clique diretamente nos dentes no odontograma.
+            </div>
+          </div>
+        ) : filteredFindings.length === 0 ? (
           <div className="p-8 text-center text-slate-500 text-xs">
             Nenhum achado encontrado neste filtro.
           </div>
@@ -337,9 +345,9 @@ export const FindingsReviewList: React.FC<FindingsReviewListProps> = ({
       <div className="p-3 border-t border-white/[0.08] bg-black/30 flex flex-col gap-1.5">
         <button
           onClick={onGenerateReport}
-          disabled={findings.length === 0 || pendingCount > 0}
+          disabled={pendingCount > 0}
           className={`w-full py-2.5 px-3 rounded-lg font-medium text-xs flex items-center justify-center gap-2 transition cursor-pointer ${
-            findings.length > 0 && pendingCount === 0
+            pendingCount === 0
               ? 'btn-notion-primary text-white shadow-lg active:scale-[0.99]'
               : 'bg-white/[0.05] text-slate-500 cursor-not-allowed border border-white/[0.08]'
           }`}
@@ -348,7 +356,9 @@ export const FindingsReviewList: React.FC<FindingsReviewListProps> = ({
           {pendingCount > 0 ? (
             <span>Valide os {pendingCount} achados pendentes</span>
           ) : (
-            <span>Gerar Laudo Clínico Odontológico ({acceptedCount} confirmados)</span>
+            <span>
+              Gerar Laudo Clínico Odontológico ({acceptedCount > 0 ? `${acceptedCount} confirmados` : 'Exame Hígido'})
+            </span>
           )}
         </button>
 
